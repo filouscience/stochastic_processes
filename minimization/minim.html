@@ -1,0 +1,45 @@
+<html>
+
+<head>
+<title>2D minimization</title>
+
+<script type="text/javascript" src="minim.js"></script>
+
+</head>
+
+<body bgcolor="white" text="black"  onload="InitAll();">
+
+<canvas id="myCanvas" width="750" height="750" style="border:1px solid"> </canvas>
+
+<br />
+
+<table><tr><td>
+terrain: <select id="maze">
+                  <option value="0">Rosenbrock Valley</option>
+                  <option value="1" selected="selected">a slighly bent eggs-box</option>
+                  <option value="2">a hyperbolic cone</option>
+                  <option value="3">Maze</option>
+                </select><br />
+begin X: <input type="number" step="any" id="beg_x" value="15"><br />
+begin Y: <input type="number" step="any" id="beg_y" value="10"><br />
+param T: <input type="range" step = "1" min="0" max="100" id="param_slide" value="26" onchange="logslide_t()"><span id="param_t"></span><br />
+step length: <input type="range" step="1" min="0" max="100" id="step_slide" value="16" onchange="logslide_l()"><span id="step_l"></span><br />
+</td>
+
+<td>
+<button type="button" onclick="DoIt()">do it</button>
+</td>
+
+<td style="padding:0px 0px 0px 100px;"><p>
+<span id="out_stat">progress:</span><br />
+loops: <span id="out_cnt"></span><br />
+x position: <span id="out_x"></span><br />
+y position: <span id="out_y"></span><br />
+z value: <span id="out_z"></span><br />
+<span id="out_pct"></span> % steps refused<br />
+</p></td>
+</tr></table>
+
+</body>
+</html>
+
