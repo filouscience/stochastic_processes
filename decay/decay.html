@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>decay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <script type="text/javascript" src="decay.js"></script>
+  </head>
+  <body>
+
+    <div id="svg_container" style="float:left">
+        <svg id="svg_element"
+            width="20cm"
+            height="20cm"
+            viewBox="0 0 1000 1000"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+        >
+          <style type="text/css">
+            <![CDATA[
+    .Border { fill:none; stroke:blue; stroke-width:1; }
+    .Axis { stroke:red; stroke-width:1; opacity:0.5; }
+            ]]>
+          </style>
+
+          <rect class="Border" x="2" y="2" width="996" height="996" />
+          <line class="Axis" x1="2" y1="21" x2="998" y2="21" />
+          <line class="Axis" x1="2" y1="501" x2="998" y2="501" />
+          <line class="Axis" x1="2" y1="980" x2="998" y2="980" />
+
+        </svg>
+    </div>
+    <div style="float:left;margin-left:20px;">
+particle count: <input type="number" step="1" id="PART_CNT" value="100" />
+<br />
+<br />
+decay rate: <input type="number" step="0.1" id="DECAY_RATE" value="1.0" /> s<sup>-1</sup>
+<br />
+<br />
+time window: <input type="number" step="0.1" id="TIME_WINDOW" value="3.0" /> s
+<br />
+<br />
+    <button onclick="do_it()">do it</button>
+<p id="output"></p>
+    </div>
+<p style="position:absolute;bottom:0;">april 2014</p>
+
+  </body>
+</html>
+
