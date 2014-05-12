@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Ornstein-Uhlenbeck process</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <script type="text/javascript" src="ou_sim.js"></script>
+    <script type="text/javascript" src="ou_io.js"></script>
+    <script type="text/javascript" src="ou_hist.js"></script>
+  </head>
+  <body>
+
+    <div id="svg_container" style="float:left">
+        <svg id="svg_element"
+            width="1024px"
+            height="512px"
+            viewBox="0 0 1000 500"
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+        >
+          <style type="text/css">
+            <![CDATA[
+    .Border { fill:none; stroke:blue; stroke-width:1; }
+    .Axis { fill:none; stroke:red; stroke-width:1; opacity:0.5; }
+    .Teor { fill:none; stroke:green; stroke-width:1; }
+    .Traj { fill:none; stroke:black; stroke-width:1; }
+    .Cell { fill:solid; stroke:black; stroke-width:1; }
+            ]]>
+          </style>
+
+          <rect class="Border" x="1" y="1" width="998" height="498" />
+          <line class="Axis" x1="2" y1="250" x2="998" y2="250" />
+          <line class="Axis" x1="200" y1="2" x2="200" y2="498" />
+          <line class="Axis" x1="400" y1="2" x2="400" y2="498" />
+          <line class="Axis" x1="600" y1="2" x2="600" y2="498" />
+          <line class="Axis" x1="800" y1="2" x2="800" y2="498" />
+          <line class="Axis" x1="997" y1="2" x2="997" y2="498" />
+          <polyline id="Teor_plus" class="Teor" points=""></polyline>
+          <polyline id="Teor_zero" class="Teor" points=""></polyline>
+          <polyline id="Teor_minus" class="Teor" points=""></polyline>
+          <polyline id="Trajectory" class="Traj" points=""></polyline>
+        </svg>
+    </div>
+    <div style="float:left;margin-left:20px;">
+    <table><tr><td>
+histogram resolution: <input type="number" step="1" id="HIST_RES" value="71" /><br />
+area: <input type="number" step="1" id="AREA" value="10" /><br />
+time window: <input type="number" step="1" id="TIME_WIND" value="6" />
+</td><td>
+num of dt steps: <input type="number" step="1" id="NUM_STEPS" value="1000" /><br />
+iterations per report: <input type="number" step="1" id="ITER" value="100" /><br />
+trajctories per click: <input type="number" step="1" id="DEF_CNT" value="10000" />
+</td><td>
+start pos: <input type="number" step="1" id="START_POS" value="4" /><br />
+param &#947;<!--gamma-->: <input type="number" step="1" id="GAMMA" value="0.5" /><br />
+param c: <input type="number" step="1" id="PARAM_C" value="2" />
+</td>
+<td>
+<button onclick="init()">init</button>
+<button onclick="do_once()">&nbsp;&#9658;&nbsp;</button>
+<button onclick="do_more()">&#9658;&#9658;</button>
+<button onclick="pause()">pause</button>
+<p><span id="count">0</span> trajectories simulated.</p>
+<p id="debug"></p>
+</td>
+    </tr></table>
+    </div>
+    <div style="float:left;margin-left:80px;">
+        <svg id="histogram0" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <rect class="Border" x="1" y="1" width="148" height="98" />
+          <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
+          <g id="hist0"></g>
+          <polyline id="Teor_t0" class="Teor" points="" ></polyline>
+        </svg>
+        <svg id="histogram1" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <rect class="Border" x="1" y="1" width="148" height="98" />
+          <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
+          <g id="hist1"></g>
+          <polyline id="Teor_t1" class="Teor" points="" ></polyline>
+        </svg>
+        <svg id="histogram2" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <rect class="Border" x="1" y="1" width="148" height="98" />
+          <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
+          <g id="hist2"></g>
+          <polyline id="Teor_t2" class="Teor" points="" ></polyline>
+        </svg>
+        <svg id="histogram3" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <rect class="Border" x="1" y="1" width="148" height="98" />
+          <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
+          <g id="hist3"></g>
+          <polyline id="Teor_t3" class="Teor" points="" ></polyline>
+        </svg>
+        <svg id="histogram4" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <rect class="Border" x="1" y="1" width="148" height="98" />
+          <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
+          <g id="hist4"></g>
+          <polyline id="Teor_t4" class="Teor" points="" ></polyline>
+        </svg>
+    </div>
+    <div style="float:left;margin-left:80px;">
+		extrapolation time power (-): <input type="number" step="1" id="TIME_POW" value="2.5" /><br />
+		inspect extrapolation profile: <input type="number" step="1" id="INSPECT" value="36" /><br />
+		<svg id="histogram5" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <rect class="Border" x="1" y="1" width="148" height="98" />
+          <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
+          <g id="hist5"></g>
+          <polyline id="Teor_lim" class="Teor" points="" ></polyline>
+        </svg>
+        <svg id="extrapol" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <rect class="Border" x="1" y="1" width="148" height="98" />
+          <line id="t5" class="Axis" x1="0" y1="1" x2="0" y2="99" />
+          <line id="t4" class="Axis" x1="0" y1="1" x2="0" y2="99" />
+          <line id="t3" class="Axis" x1="0" y1="1" x2="0" y2="99" />
+          <line id="t2" class="Axis" x1="0" y1="1" x2="0" y2="99" />
+          <line id="t1" class="Axis" x1="0" y1="1" x2="0" y2="99" />
+          <line id="t0" class="Teor" x1="0" y1="1" x2="0" y2="99" />
+          <polyline id="Teor_extra" class="Traj" points="" ></polyline>
+        </svg>
+    </div>
+<p style="position:absolute;bottom:0;">may 2014</p>
+
+  </body>
+</html>
+
