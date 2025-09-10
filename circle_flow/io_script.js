@@ -9,7 +9,7 @@ function output_reset()
 {
     output_simtime(0);
     output_total(0);
-    output_current(0);
+    output_current(0,0);
 }
 
 function rates_set() {
@@ -37,8 +37,6 @@ function site_onclick(id)
 
 // call corresponding handler in the simulation script
   set_site_occupied(index, add);
-
-  prepare_particles();
 }
 
 function set_site_fill(index, add)
@@ -113,11 +111,11 @@ function output_log_msg(msg) {
 }
 
 function output_simtime(t) {
-    document.getElementById("simtime").innerHTML = t.toFixed(4);
+    document.getElementById("simtime").innerHTML = t.toFixed(3);
 }
 
-function output_current(c) {
-    document.getElementById("current").innerHTML = c.toFixed(4);
+function output_current(c, std) {
+    document.getElementById("current").innerHTML = c.toFixed(3) + " &#177; " + std.toFixed(3);
 }
 
 function output_particle(n) {
@@ -143,10 +141,10 @@ function sim_init()
 {
     if (sim_in_progress)
         return;
+	prepare_particles();
     sim_time = 0;
     sim_in_progress = true;
-    N_FLOW = WINDOW_SIZE * PARTICLE_CNT;
-    prepare_current();
+    reset_current();
     // start the simulation
     sim_step(0, -1, 0, 0);
     output_log_msg("simulation initialized ("+ PARTICLE_CNT + " particles)");

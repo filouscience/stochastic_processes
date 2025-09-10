@@ -1,6 +1,4 @@
-var TIME_CONSTANT = 1000; // real-time constant
-var WINDOW_SIZE = 100;
-var N_FLOW;
+var TIME_CONSTANT = 1000; // real-time constant;
 var sim_in_progress = false;
 var SITE_CNT;
 var PARTICLE_CNT;
@@ -10,7 +8,8 @@ var sim_time;
 var Run;
 var Sites = new Array();
 var Particles = new Array();
-var Window = new Array();
+var mean;
+var M2;
 // ###############################################################
 
 function reset_sites()
@@ -158,7 +157,7 @@ function do_transition(j, clockwise, diff)
   // report
   var trans_t = clockwise ? Particles[j].transtime_p : Particles[j].transtime_n;
   var arrow = clockwise ? "&rarr;" : "&larr;";
-  output_log_msg("particle #" + j + " moved from site #" + from + " to site #" + to + " (" + arrow + "). transition time " + trans_t.toFixed(4) + "; simtime diff " + diff.toFixed(4));
+  output_log_msg("particle #" + j + " moved from site #" + from + " to site #" + to + " (" + arrow + "). transition time " + trans_t.toFixed(3) + "; simtime diff " + diff.toFixed(3));
 
   // evaluate modified rates and times:
   update_rate_for_site(next_site(from, !clockwise), clockwise, false);  // from-1 --> from
@@ -215,30 +214,27 @@ function sim_step(a, tr_part, tr_cw, diff)
     Run = setTimeout(function () { sim_step(a, tr_part, tr_cw, diff) }, delay);
 }
 
-function prepare_current()
+function reset_current()
 {
-  for (i = 0; i < N_FLOW; i++) {
-    Window[i] = new Object();
-    Window[i].dir = 0;
-    Window[i].stamp = 0;
-  }
+  mean = 0;
+  M2 = 0;
 }
 
-function watch_current(a, cw)
+function watch_current(a, cw) // Welford's online algorithm for mean and variance
 {
-// N_FLOW transitions happen within time interval t.
-// during that time the system made x steps in a direction determined by its sign.
-// x/N= avg step length, t/N = avg step duration, (x/N)/(t/N) = x/t = current.
-    var x = 0;
-    var t;
-    itr = a % N_FLOW;
-    Window[itr].dir = cw ? 1 : -1;
-    Window[itr].stamp = sim_time;
-    for (i = 0; i < N_FLOW; i++)
-        x += Window[i].dir;
-    t = sim_time - Window[(itr + 1) % N_FLOW].stamp;
-    if (t != 0)
-        output_current(x / t);
+  step = (cw ? 1 : -1);
+  let delta = step - mean;
+  mean += delta / a;
+  let delta2 = step - mean;
+  M2 += delta * delta2;
+  
+  if (a > 1) {
+    let cur = mean * a / sim_time;
+    let std = Math.sqrt( M2 * a / (a-1) ) / sim_time;
+	output_current(cur, std);
+  } else { // a == 1
+    output_current(mean/sim_time, 0);
+  }
 }
 
 
