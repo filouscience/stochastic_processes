@@ -20,6 +20,10 @@ function plot_trajectory(points) {
     document.getElementById("Trajectory").setAttribute("points", points);
 }
 
+function plot_trajectory_comp(points) {
+    document.getElementById("Trajectory-comp").setAttribute("points", points);
+}
+
 function report_count() {
     document.getElementById("count").innerHTML = cnt;
 }
@@ -42,6 +46,7 @@ function init() {
     compute_mn();
 
     plot_trajectory("");
+    plot_trajectory_comp("");
     generate_teor();
 
     target_cnt = DEFAULT_CNT;
@@ -53,15 +58,15 @@ function init() {
 
 }
 
-function do_it() {
-    generate_trajectory();
+function do_it(comp) {
+    generate_trajectory(comp);
     cnt++;
 }
 
 function do_once() {
     if (!initialized || timer != null)
         return;
-    do_it();
+    do_it(true);
     report_count();
     Histogram.update_cells();
 }
@@ -69,7 +74,7 @@ function do_once() {
 function do_many() {
     ITER = get_int_val("ITER");
     for (var i = 0; i < ITER; i++)
-        do_it();
+        do_it(false);
     report_count();
     Histogram.update_cells();
     if (cnt > target_cnt) {

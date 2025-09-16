@@ -23,6 +23,7 @@
     .Axis { fill:none; stroke:red; stroke-width:1; opacity:0.5; }
     .Teor { fill:none; stroke:green; stroke-width:1; }
     .Traj { fill:none; stroke:black; stroke-width:1; }
+    .Traj-comp { fill:none; stroke:purple; stroke-width:1; }
     .Cell { fill:solid; stroke:black; stroke-width:1; }
             ]]>
           </style>
@@ -38,6 +39,7 @@
           <polyline id="Teor_zero" class="Teor" points=""></polyline>
           <polyline id="Teor_minus" class="Teor" points=""></polyline>
           <polyline id="Trajectory" class="Traj" points=""></polyline>
+          <polyline id="Trajectory-comp" class="Traj-comp" points=""></polyline>
         </svg>
     </div>
     <div style="float:left;margin-left:20px;">
@@ -52,7 +54,7 @@ trajctories per click: <input type="number" step="1" id="DEF_CNT" value="10000" 
 </td><td>
 start pos: <input type="number" step="1" id="START_POS" value="4" /><br />
 param &#947;<!--gamma-->: <input type="number" step="1" id="GAMMA" value="0.5" /><br />
-param c: <input type="number" step="1" id="PARAM_C" value="2" />
+param &sigma;<sup>2</sup>: <input type="number" step="1" id="PARAM_C" value="2" />
 </td>
 <td>
 <button onclick="init()">init</button>
@@ -98,7 +100,7 @@ param c: <input type="number" step="1" id="PARAM_C" value="2" />
     </div>
     <div style="float:left;margin-left:80px;">
 		extrapolation time power (-): <input type="number" step="1" id="TIME_POW" value="2.5" /><br />
-		inspect extrapolation profile: <input type="number" step="1" id="INSPECT" value="36" /><br />
+		extrapolation polynomial of bin: <input type="number" step="1" id="INSPECT" value="36" /><br />
 		<svg id="histogram5" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
           <rect class="Border" x="1" y="1" width="148" height="98" />
           <line class="Axis" x1="75" y1="1" x2="75" y2="99" />

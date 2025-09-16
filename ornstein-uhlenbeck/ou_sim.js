@@ -3,10 +3,11 @@ var NUM_TSTEPS,
     AREA,
     TIME_WIND,
     GAMMA,
-    PARAM_C,
+    PARAM_C, // sigma^2
+    PARAM_L,
     PARAM_M,
     PARAM_N,
-    PARAM_D,
+    //PARAM_D,
     DT,
     NORMALIZE;
 const SIZE_X = 1000;
@@ -14,8 +15,9 @@ const SIZE_Y = 500;
 
 function compute_mn() {
     DT = TIME_WIND / NUM_TSTEPS;
+    PARAM_L = Math.sqrt(PARAM_C * DT);
     PARAM_M = Math.exp(-GAMMA * DT);
-    PARAM_N = Math.sqrt(PARAM_C / (2 * GAMMA) * (1 - Math.exp(-2 * GAMMA * DT))); // sigma
+    PARAM_N = Math.sqrt(PARAM_C / (2 * GAMMA) * (1 - Math.exp(-2 * GAMMA * DT))); // std = sqrt(var)
 }
 
 function random_number() {
@@ -55,9 +57,9 @@ function generate_teor() {
     var ptsm = "0," + (-xm * SIZE_Y / AREA + SIZE_Y / 2).toFixed(2) + " ";
     var tstep = TIME_WIND/100;
     for (var time = tstep; time < TIME_WIND; time += tstep) {
-        xp = START_X * Math.exp(-GAMMA * time) + Math.sqrt(PARAM_C / (2 * GAMMA) * (1 - Math.exp(-GAMMA * time)));
+        xp = START_X * Math.exp(-GAMMA * time) + Math.sqrt(PARAM_C / (2 * GAMMA) * (1 - Math.exp(-2 * GAMMA * time)));
         xz = START_X * Math.exp(-GAMMA * time);
-        xm = START_X * Math.exp(-GAMMA * time) - Math.sqrt(PARAM_C / (2 * GAMMA) * (1 - Math.exp(-GAMMA * time)));
+        xm = START_X * Math.exp(-GAMMA * time) - Math.sqrt(PARAM_C / (2 * GAMMA) * (1 - Math.exp(-2 * GAMMA * time)));
         var t = (time * SIZE_X / TIME_WIND).toFixed(2);
         ptsp = ptsp + t + "," + (-xp * SIZE_Y / AREA + SIZE_Y / 2).toFixed(2) + " ";
         ptsz = ptsz + t + "," + (-xz * SIZE_Y / AREA + SIZE_Y / 2).toFixed(2) + " ";
@@ -98,14 +100,24 @@ function generate_teor() {
     }
 }
 
-function generate_trajectory() {
+function generate_trajectory(compare) {
     var n = 0;
     var x = START_X;
+    var x1 = START_X;
     var pts = "0," + (-x * SIZE_Y / AREA + SIZE_Y / 2).toFixed(2) + " ";
+    var pts1 = "0," + (-x * SIZE_Y / AREA + SIZE_Y / 2).toFixed(2) + " ";
     for (var time = DT; time <= TIME_WIND; time += DT) {
-        x = x * PARAM_M + PARAM_N * Box_Muller.N(/*0,1*/);
+
+        var rnd = Box_Muller.N(/*0,1*/);
+        x = x - GAMMA * x * DT + PARAM_L * rnd;
+
         var t = (time * SIZE_X / TIME_WIND).toFixed(2);
         pts = pts + t + "," + (-x * SIZE_Y / AREA + SIZE_Y / 2).toFixed(2) + " ";
+
+        if (compare) {
+            x1 = x1 * PARAM_M + PARAM_N * rnd;
+            pts1 = pts1 + t + "," + (-x1 * SIZE_Y / AREA + SIZE_Y / 2).toFixed(2) + " ";
+        }
 
         // collect histogram data
         if ((time >= TIME_WIND / 5 && n == 0) ||
@@ -118,5 +130,7 @@ function generate_trajectory() {
     }
     Histogram.add(n, x);
     plot_trajectory(pts);
+    if (compare)
+        plot_trajectory_comp(pts1);
 }
 
