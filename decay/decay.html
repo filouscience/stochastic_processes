@@ -18,7 +18,8 @@
           <style type="text/css">
             <![CDATA[
     .Border { fill:none; stroke:blue; stroke-width:1; }
-    .Axis { stroke:red; stroke-width:1; opacity:0.5; }
+    .Axis { fill:none; stroke:red; stroke-width:1; opacity:0.5; }
+    .Predict { fill:none; stroke:green; stroke-width:2; }
             ]]>
           </style>
 
@@ -26,6 +27,8 @@
           <line class="Axis" x1="2" y1="21" x2="998" y2="21" />
           <line class="Axis" x1="2" y1="501" x2="998" y2="501" />
           <line class="Axis" x1="2" y1="980" x2="998" y2="980" />
+          <polyline class="Axis" id="half-life-polyline" points="" />
+          <polyline class="Predict" id="predict-polyline" points="" />
 
         </svg>
     </div>
@@ -36,11 +39,15 @@ particle count: <input type="number" step="1" id="PART_CNT" value="100" />
 decay rate: <input type="number" step="0.1" id="DECAY_RATE" value="1.0" /> s<sup>-1</sup>
 <br />
 <br />
+half-life: <input type="number" step="0.1" id="HALF_LIFE" value="0.6931471805599453" disabled /> s
+<br />
+<br />
 time window: <input type="number" step="0.1" id="TIME_WINDOW" value="3.0" /> s
 <br />
 <br />
     <button onclick="do_it()">do it</button>
-<p id="output"></p>
+<p id="output-a"></p>
+<p id="output-b" style="color:blue;"></p>
     </div>
 <p style="position:absolute;bottom:0;">april 2014</p>
 

@@ -3,10 +3,15 @@ const BOX_Y = 960; // total 1000
 const OFFSET_X = 2;
 const OFFSET_Y = 20;
 
+var half_life;
+
 function do_it() {
 	n = parseInt(document.getElementById("PART_CNT").value);
     d = parseFloat(document.getElementById("DECAY_RATE").value);
     w = parseFloat(document.getElementById("TIME_WINDOW").value);
+    if ( n < 0 || d < 0 || w <= 0 )
+        return;
+    set_half_life(d,w);
 	predict(n,d,w);
     run_sim_a(n,d,w);
 	run_sim_b(n,d,w);
@@ -20,10 +25,13 @@ function trajectory(points, colour) {
     document.getElementById("svg_element").appendChild(polyline);
 }
 
-function output_msg(msg) {
-    document.getElementById("output").innerHTML = msg;
+function output_msg_a(msg) {
+    document.getElementById("output-a").innerHTML = msg;
 }
 
+function output_msg_b(msg) {
+    document.getElementById("output-b").innerHTML = msg;
+}
 
 function random_number() {
     // return a random number between 0 (inclusive) and 1 (exclusive)
@@ -60,7 +68,20 @@ function predict(PARTICLES_N, DECAY_RATE, TIME_WINDOW) {
 		var py = BOX_Y - particles_n * BOX_Y / PARTICLES_N + OFFSET_Y;
 		points = points + px + "," + py + " ";
 	}
-	trajectory(points, "green");
+    document.getElementById("predict-polyline").setAttribute("points",points);
+}
+
+function set_half_life(DECAY_RATE, TIME_WINDOW) {
+    if (DECAY_RATE != 0)
+        half_life = Math.log(2)/DECAY_RATE;
+    else
+        half_life = Number.POSITIVE_INFINITY;
+    document.getElementById("HALF_LIFE").value = half_life;
+    if (half_life < TIME_WINDOW) {
+        var xhl = (half_life * BOX_X / TIME_WINDOW + OFFSET_X);
+        var points = xhl + ",2 " + xhl + ",998";
+        document.getElementById("half-life-polyline").setAttribute("points",points);
+    }
 }
 
 
@@ -87,7 +108,7 @@ function run_sim_a(PARTICLES_N, DECAY_RATE, TIME_WINDOW) {
     }
     points = points + (BOX_X + OFFSET_X) + "," + (BOX_Y - (particles_n) * BOX_Y / (PARTICLES_N) + OFFSET_Y) + " ";
     trajectory(points, "blue");
-    output_msg(particles_n + " out of " + PARTICLES_N + " particles with decay rate " + DECAY_RATE + " s<sup>-1</sup> left after " + (simtime>TIME_WINDOW ? TIME_WINDOW : simtime.toFixed(3)) + " s.");
+    output_msg_a(particles_n + " out of " + PARTICLES_N + " particles with decay rate " + DECAY_RATE + " s<sup>-1</sup> left after " + (simtime>TIME_WINDOW ? TIME_WINDOW : simtime.toFixed(3)) + " s. (ensemble sim.)");
 }
 
 function run_sim_b(PARTICLES_N, DECAY_RATE, TIME_WINDOW) {
@@ -119,5 +140,5 @@ function run_sim_b(PARTICLES_N, DECAY_RATE, TIME_WINDOW) {
     }
     points = points + (BOX_X + OFFSET_X) + "," + (BOX_Y - (particles_n) * BOX_Y / (PARTICLES_N) + OFFSET_Y) + " ";
     trajectory(points, "black");
-    output_msg(particles_n + " out of " + PARTICLES_N + " particles with decay rate " + DECAY_RATE + " s<sup>-1</sup> left after " + (simtime>TIME_WINDOW ? TIME_WINDOW : simtime.toFixed(3)) + " s.");
+    output_msg_b(particles_n + " out of " + PARTICLES_N + " particles with decay rate " + DECAY_RATE + " s<sup>-1</sup> left after " + (simtime>TIME_WINDOW ? TIME_WINDOW : simtime.toFixed(3)) + " s. (individual sim.)");
 }
