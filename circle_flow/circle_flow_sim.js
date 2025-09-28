@@ -169,7 +169,6 @@ function do_transition(j, clockwise, diff)
 // FRTA step
 function sim_step(a, tr_part, tr_cw, diff)
 {
-  //alert("I am alive");
     if (sim_in_progress) {
 
         if (tr_part != -1) // the real-time visualization requires this inconvenient construction :/
@@ -211,7 +210,12 @@ function sim_step(a, tr_part, tr_cw, diff)
         a++;
         var delay = (diff) * TIME_CONSTANT;
     }
-    Run = setTimeout(function () { sim_step(a, tr_part, tr_cw, diff) }, delay);
+
+    if (diff == Infinity) {
+        return;
+    } else {
+        Run = setTimeout(function () { sim_step(a, tr_part, tr_cw, diff) }, delay);
+    }
 }
 
 function reset_current()
