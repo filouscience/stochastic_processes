@@ -11,8 +11,8 @@
 
     <div id="svg_container" style="float:left">
         <svg id="svg_element"
-            width="1024px"
-            height="512px"
+            width="1100px"
+            height="550px"
             viewBox="0 0 1000 500"
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
@@ -35,6 +35,8 @@
           <line class="Axis" x1="600" y1="2" x2="600" y2="498" />
           <line class="Axis" x1="800" y1="2" x2="800" y2="498" />
           <line class="Axis" x1="997" y1="2" x2="997" y2="498" />
+          <text x="5" y="245" font-size="20" transform="rotate(-90 10,235)">x &rarr;</text>
+          <text x="10" y="490" font-size="20">t &rarr;</text>
           <polyline id="Teor_plus" class="Teor" points=""></polyline>
           <polyline id="Teor_zero" class="Teor" points=""></polyline>
           <polyline id="Teor_minus" class="Teor" points=""></polyline>
@@ -42,18 +44,29 @@
           <polyline id="Trajectory-comp" class="Traj-comp" points=""></polyline>
         </svg>
     </div>
+    <div style="float:left;width:400px;margin-left:20px;">
+      <h2>Ornstein-Uhlenbeck process</h2>
+      <p style="text-align:justify;">
+        A random walk in (1D) overdamped environment (inertia is negligible, so "there's no motion without a force.")
+      </p>
+      <p style="text-align:justify;">
+        The parameters &gamma; and &sigma; control the magnitudes of forces:
+        -&gamma;x drives the particle towards equilibrium position at x = 0, and
+        &sigma;&eta;(t) is the random force with variance &sigma;<sup>2</sup>.
+      </p>
+    </div>
     <div style="float:left;margin-left:20px;">
     <table><tr><td>
 histogram resolution: <input type="number" step="1" id="HIST_RES" value="71" /><br />
 area: <input type="number" step="1" id="AREA" value="10" /><br />
 time window: <input type="number" step="1" id="TIME_WIND" value="6" />
 </td><td>
-num of dt steps: <input type="number" step="1" id="NUM_STEPS" value="1000" /><br />
+num of &Delta;t steps: <input type="number" step="1" id="NUM_STEPS" value="1000" /><br />
 iterations per report: <input type="number" step="1" id="ITER" value="100" /><br />
 trajctories per click: <input type="number" step="1" id="DEF_CNT" value="10000" />
 </td><td>
 start pos: <input type="number" step="1" id="START_POS" value="4" /><br />
-param &#947;<!--gamma-->: <input type="number" step="1" id="GAMMA" value="0.5" /><br />
+param &gamma;: <input type="number" step="1" id="GAMMA" value="0.5" /><br />
 param &sigma;<sup>2</sup>: <input type="number" step="1" id="PARAM_C" value="2" />
 </td>
 <td>
@@ -66,32 +79,32 @@ param &sigma;<sup>2</sup>: <input type="number" step="1" id="PARAM_C" value="2" 
 </td>
     </tr></table>
     </div>
-    <div style="float:left;margin-left:80px;">
-        <svg id="histogram0" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+    <div style="float:left;margin-left:110px;">
+        <svg id="histogram0" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1" style="margin-left:5px;">
           <rect class="Border" x="1" y="1" width="148" height="98" />
           <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
           <g id="hist0"></g>
           <polyline id="Teor_t0" class="Teor" points="" ></polyline>
         </svg>
-        <svg id="histogram1" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <svg id="histogram1" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1" style="margin-left:5px;">
           <rect class="Border" x="1" y="1" width="148" height="98" />
           <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
           <g id="hist1"></g>
           <polyline id="Teor_t1" class="Teor" points="" ></polyline>
         </svg>
-        <svg id="histogram2" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <svg id="histogram2" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1" style="margin-left:5px;">
           <rect class="Border" x="1" y="1" width="148" height="98" />
           <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
           <g id="hist2"></g>
           <polyline id="Teor_t2" class="Teor" points="" ></polyline>
         </svg>
-        <svg id="histogram3" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <svg id="histogram3" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1" style="margin-left:5px;">
           <rect class="Border" x="1" y="1" width="148" height="98" />
           <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
           <g id="hist3"></g>
           <polyline id="Teor_t3" class="Teor" points="" ></polyline>
         </svg>
-        <svg id="histogram4" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <svg id="histogram4" width="210px" height="140px" viewBox="0 0 150 100" xmlns="http://www.w3.org/2000/svg" version="1.1" style="margin-left:5px;">
           <rect class="Border" x="1" y="1" width="148" height="98" />
           <line class="Axis" x1="75" y1="1" x2="75" y2="99" />
           <g id="hist4"></g>
