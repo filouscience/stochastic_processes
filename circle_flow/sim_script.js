@@ -169,49 +169,49 @@ function do_transition(j, clockwise, diff)
 // FRTA step
 function sim_step(a, tr_part, tr_cw, diff)
 {
-    if (tr_part != -1) // the real-time visualization requires this inconvenient construction :/
-    {
-        // perform the transition
-        do_transition(tr_part, tr_cw, diff);
+  //alert("I am alive");
+    if (sim_in_progress) {
 
-        // count current/flow statistics
-        watch_current(a, tr_cw);
-        output_total(a);
-    }
+        if (tr_part != -1) // the real-time visualization requires this inconvenient construction :/
+        {
+            // perform the transition
+            do_transition(tr_part, tr_cw, diff);
 
-    // find the soonest transition
-    var tr_part;  // particle to be moved
-    var tr_cw;    // clock-wisdom :)
-    var diff = Number.POSITIVE_INFINITY;
-    for (j = 0; j < PARTICLE_CNT; j++) {
-        if (Particles[j].timer_p <= diff) {
-            tr_part = j;
-            tr_cw = true;
-            diff = Particles[j].timer_p;
+            // count current/flow statistics
+            watch_current(a, tr_cw);
+            output_total(a);
         }
-        if (Particles[j].timer_n <= diff) {
-            tr_part = j;
-            tr_cw = false;
-            diff = Particles[j].timer_n;
+
+        // find the soonest transition
+        var tr_part;  // particle to be moved
+        var tr_cw;    // clock-wisdom :)
+        var diff = Number.POSITIVE_INFINITY;
+        for (j = 0; j < PARTICLE_CNT; j++) {
+            if (Particles[j].timer_p <= diff) {
+                tr_part = j;
+                tr_cw = true;
+                diff = Particles[j].timer_p;
+            }
+            if (Particles[j].timer_n <= diff) {
+                tr_part = j;
+                tr_cw = false;
+                diff = Particles[j].timer_n;
+            }
         }
-    }
 
-    // update simulation time
-    sim_time += diff;
-    output_simtime(sim_time);
-    for (j = 0; j < PARTICLE_CNT; j++) {
-        Particles[j].timer_p -= diff;
-        Particles[j].timer_n -= diff;
-    }
+        // update simulation time
+        sim_time += diff;
+        output_simtime(sim_time);
+        for (j = 0; j < PARTICLE_CNT; j++) {
+            Particles[j].timer_p -= diff;
+            Particles[j].timer_n -= diff;
+        }
 
-    // proceed to the next transition
-    if (diff == Infinity) {
-        return;
-    } else {
+        // proceed to the next transition
         a++;
         var delay = (diff) * TIME_CONSTANT;
-        Run = setTimeout(function () { sim_step(a, tr_part, tr_cw, diff) }, delay);
     }
+    Run = setTimeout(function () { sim_step(a, tr_part, tr_cw, diff) }, delay);
 }
 
 function reset_current()
