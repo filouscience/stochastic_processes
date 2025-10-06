@@ -5,7 +5,7 @@ var PARTICLE_CNT;
 var RATE_POS = 0.9; // default
 var RATE_NEG = 0.6; // values
 var sim_time;
-var Run;
+var timeoutId = 0;
 var Sites = new Array();
 var Particles = new Array();
 var mean;
@@ -214,7 +214,7 @@ function sim_step(a, tr_part, tr_cw, diff)
     if (diff == Infinity) {
         return;
     } else {
-        Run = setTimeout(function () { sim_step(a, tr_part, tr_cw, diff) }, delay);
+        timeoutId = setTimeout(function () { sim_step(a, tr_part, tr_cw, diff) }, delay);
     }
 }
 

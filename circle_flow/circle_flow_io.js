@@ -1,4 +1,8 @@
-function sites_set() {
+function sites_set()
+{
+    if (timeoutId)
+        return;
+    
     SITE_CNT = parseInt(document.getElementById("SITE_CNT").value);
     reset_sites();
     prepare_the_scene();
@@ -12,7 +16,11 @@ function output_reset()
     output_current(0,0);
 }
 
-function rates_set() {
+function rates_set()
+{
+    if (timeoutId)
+        return;
+    
     RATE_POS = Math.max(parseFloat(document.getElementById("wplus").value),0);
     RATE_NEG = Math.max(parseFloat(document.getElementById("wminus").value),0);
     output_log_msg("set rates: w+ = " + RATE_POS + ", w- = " + RATE_NEG);
@@ -22,7 +30,7 @@ function rates_set() {
 
 function site_onclick(id)
 {
-  if (sim_in_progress)
+  if (timeoutId)
     return;
 
   // semaphore: cur_state XOR 1 (cannot use ! due to string type of the attribute value)
@@ -50,17 +58,18 @@ function speed_slide()
     if (document.speed_form.s[0].checked) // paused
     {
         sim_in_progress = false;
-        return;
     }
-    if (document.speed_form.s[1].checked) // real-time
+    else if (document.speed_form.s[1].checked) // real-time
     {
+        sim_in_progress = true;
         TIME_CONSTANT = 1000;
     }
     else if (document.speed_form.s[2].checked) // max
     {
+        sim_in_progress = true;
         TIME_CONSTANT = 0;
     }
-    sim_in_progress = true;
+    
 }
 
 function prepare_the_scene()
@@ -128,22 +137,20 @@ function output_total(a) {
 
 function sim_stop()
 {
-    if (sim_in_progress)
-    {
-        sim_in_progress = false;
-        clearInterval(Run);
-        output_reset();
-        output_log_msg("simulation stopped");
-    }
+    sim_in_progress = false;
+    clearTimeout(timeoutId);
+    timeoutId = 0;
+    output_reset();
+    output_log_msg("simulation stopped");
 }
 
 function sim_init()
 {
-    if (sim_in_progress)
+    if (timeoutId)
         return;
 	prepare_particles();
     sim_time = 0;
-    sim_in_progress = true;
+    speed_slide(); //sim_in_progress = true;
     reset_current();
     // start the simulation
     sim_step(0, -1, 0, 0);
