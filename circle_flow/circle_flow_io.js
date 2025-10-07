@@ -6,6 +6,7 @@ function sites_set()
     SITE_CNT = parseInt(document.getElementById("SITE_CNT").value);
     reset_sites();
     prepare_the_scene();
+    output_particle(0);
     output_reset();
 }
 
@@ -140,7 +141,6 @@ function sim_stop()
     sim_in_progress = false;
     clearTimeout(timeoutId);
     timeoutId = 0;
-    output_reset();
     output_log_msg("simulation stopped");
 }
 
@@ -152,6 +152,7 @@ function sim_init()
     sim_time = 0;
     speed_slide(); //sim_in_progress = true;
     reset_current();
+    output_reset();
     // start the simulation
     sim_step(0, -1, 0, 0);
     output_log_msg("simulation initialized ("+ PARTICLE_CNT + " particles)");
