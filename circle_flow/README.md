@@ -36,7 +36,7 @@ p^+(t) = w^+ e^{-w^+t}
 ```math
 p^-(t) = w^- e^{-w^-t}
 ```
-if the adjacent site in given direction is free.
+if the adjacent site in given direction is free, zero otherwise.
 
 During the simulation, we count the transitions in the two directions $n^+$, $n^-$.
 The current (in the clockwise direction) is defined as
@@ -110,13 +110,14 @@ simply because 10 % of possible outcomes lie outside the confidence interval.
 The assumed distribution is normal. We rely on a large number of samples (here $\approx 10^5$),
 so there is no need for the exact Student's t-distribution,
 nor for the actual (unknown) distribution of the complex random process.
+This approach is characteristic in the field of statistical physics.
 
 Then, for a given number of particles $N$, we compare the mean values of $J$ and $\tilde{J}$,
 and see how far apart (in terms of $\sigma$) these values are:
 ```math
 t = \frac{J-\tilde{J}}{\sigma}
 ```
-Again, $\sigma^2$ is the sample variance of $J$, by which we approximate the true variance of $\tilde{J}$.
+Again, $\sigma^2$ is the sample variance of $J$, by which we approximate the true variance of $\tilde{J}$, for we don't know any better.
 
 Finally, we compare $t$ with the critical value $t_c(\alpha)$,
 the $\alpha$-quantile of the normal distribution (in terms of $\sigma$):
@@ -124,6 +125,14 @@ the $\alpha$-quantile of the normal distribution (in terms of $\sigma$):
 t_c(\alpha=0.05) = 1.645
 ```
 If $|t| > t_c$, we refuse the hypothesis, as the evidence lies outside the confidence interval.
+
+> The overall idea is the following: we *assume* that the null hypothesis is true.
+> Furthermore, we *assume* the normal distribution of the measured current with mean $\tilde{J}$ and variance $\sigma^2$.
+> Then we ask: what is the probability of sampling a point (from the *assumed* distribution) at least as extreme as the given data point $J$?
+> If the probability is too small, it is a hint that some of our *assumptions* may be incorrect.
+> Typically, this would be the one about the null hypothesis being true...
+
+### results
 
 | $N$ | $J$ | $\sigma$ | $\tilde{J}$ | abs $(t)-t_c$ |
 | - | - | - | - | - |
