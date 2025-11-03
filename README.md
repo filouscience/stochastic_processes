@@ -29,4 +29,4 @@ exponential decay of population (April 2014)
 particle hopping from site to site with periodic boundary condition (April 2014)
 
 ### ornstein-uhlenbeck
-Ornstein-Uhlenbeck process (May 2014)
+Ornstein&ndash;Uhlenbeck process (May 2014)

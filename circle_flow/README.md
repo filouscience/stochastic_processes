@@ -83,7 +83,7 @@ parameters:
 
 | plot | description |
 | - | - |
-| ![results](img/results.png "results") | Plot: the dependence of current $J$ on number of particles $N$ in the system for a fixed number of sites $S=20$ and bias $b=0.3 s^{-1}$.<br><br>The error bars on data show the confidence interval of $\pm 2 \sigma$.<br><br>Based on the results, we formulate a hypothesis: a model explaining the data<br><br>non-excl. model shows the current of $N$ non-exclusive (independent, non-interacting) particles.<br><br>We observe the particle&mdash;hole symmetry. |
+| ![results](img/results.png "results") | Plot: the dependence of current $J$ on number of particles $N$ in the system for a fixed number of sites $S=20$ and bias $b=0.3 s^{-1}$.<br><br>The error bars on data show the confidence interval of $\pm 2 \sigma$.<br><br>Based on the results, we formulate a hypothesis: a model explaining the data<br><br>non-excl. model shows the current of $N$ non-exclusive (independent, non-interacting) particles.<br><br>We observe the particle&ndash;hole symmetry. |
 
 The hypothesis is that the mean current $\tilde{J}$ is given by:
 ```math

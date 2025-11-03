@@ -20,7 +20,7 @@ the higher the temperature, the more "lively" the Brownian particle during a ran
 
 At the time, I found it pretty cool and created this project,
 simply following the steps as presented by the teacher during an elementary course on using computers in physics.
-Only later have I realized that this is actually an implementation of the Metropolis algorithm.
+Only later have I realized that this is actually an implementation of the Metropolis algorithm (a Markov chain Monte Carlo method).
 
 ### Metropolis algorithm
 
